@@ -15,6 +15,7 @@ CREATE TABLE CUSTOMER (
     DOB DATE
 );
 
+
 CREATE TABLE CUSTOMER_LOGIN (
     Login_ID INT PRIMARY KEY,
     Username VARCHAR(50) UNIQUE,
@@ -111,3 +112,27 @@ CREATE TABLE TRANSACTION (
     FOREIGN KEY (Account_ID) REFERENCES ACCOUNT(Account_ID)
 );
 
+-- Sample
+
+INSERT INTO CUSTOMER (Customer_ID, F_Name, L_Name, Gender, Email, Address, Phone, SSN, Credit_Score, DOB)
+VALUES 
+    (4, 'Emily', 'Davis', 'Female', 'emily.davis@example.com', '567 Maple Dr, Banking City', '555-3456', '456-78-9012', 790, '1988-09-12'),
+    (5, 'Michael', 'Wilson', 'Male', 'michael.wilson@example.com', '890 Cedar Lane, Banking City', '555-6789', '567-89-0123', 710, '1979-04-25'),
+    (6, 'Jessica', 'Taylor', 'Female', 'jessica.taylor@example.com', '123 Birch St, Banking City', '555-7890', '678-90-1234', 840, '1992-07-18'),
+    (7, 'David', 'Miller', 'Male', 'david.miller@example.com', '456 Walnut Ave, Banking City', '555-8901', '789-01-2345', 670, '1983-12-05');
+
+INSERT INTO CUSTOMER_LOGIN (Login_ID, Username, Password_Hash, Last_Login, Status, Customer_ID)
+VALUES 
+    (4, 'edavis', 'hashed_password_7', '2023-05-02 14:20:00', 'Active', 4),
+    (5, 'mwilson', 'hashed_password_8', '2023-05-02 10:45:00', 'Active', 5),
+    (6, 'jtaylor', 'hashed_password_9', '2023-05-02 16:30:00', 'Active', 6),
+    (7, 'dmiller', 'hashed_password_10', '2023-05-02 09:15:00', 'Active', 7);
+
+INSERT INTO ACCOUNT (Account_ID, Open_Date, Balance, Account_Type, Credit_Score, Customer_ID)
+VALUES 
+    (105, '2022-04-10', 8500.00, 'Savings', 790, 4),
+    (106, '2022-04-12', 3200.00, 'Checking', 790, 4),
+    (107, '2022-03-15', 6700.00, 'Savings', 710, 5),
+    (108, '2022-05-20', 15000.00, 'Premium Savings', 840, 6),
+    (109, '2022-05-22', 4200.00, 'Checking', 840, 6),
+    (110, '2022-02-28', 1800.00, 'Checking', 670, 7);

@@ -29,21 +29,21 @@ VALUES
     (1, 'Main Branch', '100 Finance St, Banking City'),
     (2, 'Downtown Branch', '200 Central Ave, Banking City');
 
--- Insert employee data
+-- Insert employee data (Use different IDs than Account_ID to avoid conflicts)
 INSERT INTO EMPLOYEE (Employee_ID, F_Name, L_Name, Email, Address, Phone, Position, Salary, Start_Date, Employment_Status, Branch_ID)
 VALUES 
-    (101, 'Jane', 'Smith', 'jane.smith@bank.com', '10 Employee St', '555-1000', 'Manager', 75000.00, '2015-03-15', 'Active', 1),
-    (102, 'Mike', 'Johnson', 'mike.johnson@bank.com', '20 Staff Ave', '555-1001', 'Teller', 45000.00, '2018-06-10', 'Active', 1),
-    (103, 'Sarah', 'Williams', 'sarah.williams@bank.com', '30 Worker Rd', '555-1002', 'Loan Officer', 60000.00, '2017-09-05', 'Active', 2);
+    (201, 'Jane', 'Smith', 'jane.smith@bank.com', '10 Employee St', '555-1000', 'Manager', 75000.00, '2015-03-15', 'Active', 1),
+    (202, 'Mike', 'Johnson', 'mike.johnson@bank.com', '20 Staff Ave', '555-1001', 'Teller', 45000.00, '2018-06-10', 'Active', 1),
+    (203, 'Sarah', 'Williams', 'sarah.williams@bank.com', '30 Worker Rd', '555-1002', 'Loan Officer', 60000.00, '2017-09-05', 'Active', 2);
 
 -- Insert employee login data
 INSERT INTO EMPLOYEE_LOGIN (Login_ID, Username, Password_Hash, Last_Login, Status, Employee_ID)
 VALUES 
-    (201, 'jsmith', 'hashed_password_1', '2023-05-01 08:30:00', 'Active', 101),
-    (202, 'mjohnson', 'hashed_password_2', '2023-05-01 09:15:00', 'Active', 102),
-    (203, 'swilliams', 'hashed_password_3', '2023-05-01 08:45:00', 'Active', 103);
+    (201, 'jsmith', 'hashed_password_1', '2023-05-01 08:30:00', 'Active', 201),
+    (202, 'mjohnson', 'hashed_password_2', '2023-05-01 09:15:00', 'Active', 202),
+    (203, 'swilliams', 'hashed_password_3', '2023-05-01 08:45:00', 'Active', 203);
 
--- Insert customer data
+-- Insert customer data (Start with ID 1 as schema.sql starts with ID 4)
 INSERT INTO CUSTOMER (Customer_ID, F_Name, L_Name, Gender, Email, Address, Phone, SSN, Credit_Score, DOB)
 VALUES 
     (1, 'John', 'Doe', 'Male', 'john.doe@example.com', '123 Main St', '555-1234', '123-45-6789', 750, '1985-06-15'),
@@ -57,27 +57,27 @@ VALUES
     (2, 'mjohnson', 'hashed_password_5', '2023-05-01 11:30:00', 'Active', 2),
     (3, 'rbrown', 'hashed_password_6', '2023-05-01 09:45:00', 'Active', 3);
 
--- Insert account data
+-- Insert account data (Use IDs 1-3 since schema.sql uses IDs 105-110)
 INSERT INTO ACCOUNT (Account_ID, Open_Date, Balance, Account_Type, Credit_Score, Customer_ID)
 VALUES 
-    (101, '2022-01-15', 5000.00, 'Savings', 750, 1),
-    (102, '2022-02-20', 3500.00, 'Checking', 750, 1),
-    (103, '2022-01-10', 12000.00, 'Savings', 820, 2),
-    (104, '2022-03-05', 2500.00, 'Checking', 680, 3);
+    (1, '2022-01-15', 5000.00, 'Savings', 750, 1),
+    (2, '2022-02-20', 3500.00, 'Checking', 750, 1),
+    (3, '2022-01-10', 12000.00, 'Savings', 820, 2),
+    (4, '2022-03-05', 2500.00, 'Checking', 680, 3);
 
 -- Insert card data
 INSERT INTO CARD (Card_ID, Card_Number, Expiry_Date, Card_Type, Card_Status, Account_ID)
 VALUES 
-    (1001, '4111111111111111', '2025-12-31', 'Debit', 'Active', 102),
-    (1002, '5111111111111111', '2025-10-31', 'Credit', 'Active', 103),
-    (1003, '6111111111111111', '2026-05-31', 'Debit', 'Active', 104);
+    (1, '4111111111111111', '2025-12-31', 'Debit', 'Active', 2),
+    (2, '5111111111111111', '2025-10-31', 'Credit', 'Active', 3),
+    (3, '6111111111111111', '2026-05-31', 'Debit', 'Active', 4);
 
 -- Insert loan data
 INSERT INTO LOAN (Loan_ID, Loan_Amount, Loan_Type, Start_Date, End_Date, Loan_Status, Account_ID)
 VALUES 
-    (10001, 25000.00, 'Personal', '2022-03-10', '2025-03-10', 'Approved', 101),
-    (10002, 150000.00, 'Mortgage', '2022-04-15', '2042-04-15', 'Approved', 103),
-    (10003, 15000.00, 'Auto', '2022-05-20', '2025-05-20', 'Pending', 104);
+    (1, 25000.00, 'Personal', '2022-03-10', '2025-03-10', 'Approved', 1),
+    (2, 150000.00, 'Mortgage', '2022-04-15', '2042-04-15', 'Approved', 3),
+    (3, 15000.00, 'Auto', '2022-05-20', '2025-05-20', 'Pending', 4);
 
 -- Insert some sample AI advisor data
 INSERT INTO AI_ADVISOR (Advisor_ID, Timestamp, Content, Advisor_Type)
@@ -225,21 +225,21 @@ GROUP BY b.Branch_ID, b.Branch_Name, b.Address;
 -- Test basic operations (from basic.sql)
 -- Test 1: Test transaction insertion and balance update trigger
 SELECT 'TEST 1: Testing transaction insertion and balance update trigger' AS 'Test Description';
-SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 101;
+SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 1;
 INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID)
-VALUES (1001, 'Test deposit', 'Deposit', NOW(), 1000.00, 101);
-SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 101;
+VALUES (1, 'Test deposit', 'Deposit', NOW(), 1000.00, 1);
+SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 1;
 
 -- Test 2: Test overdraft prevention trigger
 SELECT 'TEST 2: Testing overdraft prevention trigger' AS 'Test Description';
-SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 104;
+SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 4;
 -- This should cause an error due to insufficient funds
--- Uncomment to test the error: INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID) VALUES (1002, 'Test withdrawal with insufficient funds', 'Withdrawal', NOW(), 9999.00, 104);
+-- Uncomment to test the error: INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID) VALUES (2, 'Test withdrawal with insufficient funds', 'Withdrawal', NOW(), 9999.00, 4);
 
 -- Insert a valid withdrawal
 INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID)
-VALUES (1002, 'Test withdrawal', 'Withdrawal', NOW(), 500.00, 104);
-SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 104;
+VALUES (2, 'Test withdrawal', 'Withdrawal', NOW(), 500.00, 4);
+SELECT Account_ID, Balance FROM ACCOUNT WHERE Account_ID = 4;
 
 -- Test 3: Test credit score sync trigger
 SELECT 'TEST 3: Testing credit score sync trigger' AS 'Test Description';
