@@ -96,7 +96,7 @@ DELIMITER ;
 
 -- Procedure 2: Create New Customer with Account with Backup Logging
 DELIMITER //
-CREATE OR REPLACE PROCEDURE create_customer_with_account(
+CREATE PROCEDURE create_customer_with_account(
     IN p_f_name VARCHAR(50),
     IN p_l_name VARCHAR(50),
     IN p_gender ENUM('Male', 'Female', 'Other'),
@@ -141,14 +141,11 @@ BEGIN
     INSERT INTO ACCOUNT (Account_ID, Open_Date, Balance, Account_Type, Credit_Score, Customer_ID)
     VALUES (p_account_id, CURRENT_DATE(), p_initial_deposit, p_account_type, p_credit_score, p_customer_id);
     
-    -- Log initial deposit transaction
     INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID)
     VALUES (FLOOR(RAND()*10000) + 5000, 'Initial account deposit', 'Deposit', NOW(), p_initial_deposit, p_account_id);
     
-    -- Get next backup ID directly in the INSERT
     SELECT COALESCE(MAX(Backup_ID), 0) + 1 INTO backup_id FROM BACKUP_LOGS;
     
-    -- Record successful customer and account creation in backup logs
     INSERT INTO BACKUP_LOGS (Backup_ID, Timestamp, Filepath, Status)
     VALUES (backup_id, NOW(), CONCAT('customer_account_creation_', p_customer_id, '_', p_account_id), 'Success');
     
@@ -163,21 +160,15 @@ BEGIN
     DECLARE backup_id INT;
     DECLARE EXIT HANDLER FOR SQLEXCEPTION 
     BEGIN
-        -- Log failed backup attempt
         SELECT COALESCE(MAX(Backup_ID), 0) + 1 INTO backup_id FROM BACKUP_LOGS;
         INSERT INTO BACKUP_LOGS (Backup_ID, Timestamp, Filepath, Status)
         VALUES (backup_id, NOW(), 'database_views_backup', 'Failed');
     END;
     
-    -- Record view backup operation in backup logs
     SELECT COALESCE(MAX(Backup_ID), 0) + 1 INTO backup_id FROM BACKUP_LOGS;
     INSERT INTO BACKUP_LOGS (Backup_ID, Timestamp, Filepath, Status)
     VALUES (backup_id, NOW(), 'database_views_backup', 'Success');
     
-    -- Here you would typically include logic to actually create backups
-    -- For example, outputting view definitions to files or another database
-    
-    -- For demonstration, let's create a notification in the AI_ADVISOR table
     INSERT INTO AI_ADVISOR (Advisor_ID, Timestamp, Content, Advisor_Type)
     VALUES (
         FLOOR(RAND()*10000) + 1000,
@@ -190,52 +181,40 @@ DELIMITER ;
 
 
 --! Example for transfer_money procedure
--- Set variable to store output status
 SET @transfer_status = NULL;
-
--- Transfer $500 from Account 105 (Emily's Savings) to Account 106 (Emily's Checking)
 CALL transfer_money(105, 106, 500.00, @transfer_status);
-
--- Display the transfer status
 SELECT @transfer_status AS 'Transfer Result';
 
--- Check account balances after transfer
 SELECT Account_ID, Balance, Account_Type FROM ACCOUNT WHERE Account_ID IN (105, 106);
 
--- Check transaction logs
 SELECT * FROM TRANSACTION 
 WHERE Account_ID IN (105, 106) 
 ORDER BY Transaction_Time DESC LIMIT 4;
 
--- Check backup logs
 SELECT * FROM BACKUP_LOGS 
 WHERE Filepath LIKE 'transfer_log_105_%' 
 ORDER BY Timestamp DESC LIMIT 1;
 
 --! Example for create_customer_with_account procedure
--- Set variables to store output IDs
 SET @new_customer_id = NULL;
 SET @new_account_id = NULL;
 
--- Create new customer with checking account and $3000 initial deposit
 CALL create_customer_with_account(
-    'John',          -- First name
-    'Smith',         -- Last name
-    'Male',          -- Gender
-    'john.s@example.com', -- Email
-    '123 Main Street', -- Address
-    '555-1234',      -- Phone
-    '123-45-6789',   -- SSN
-    700,             -- Credit score
-    '1985-06-15',    -- Date of birth
-    'Savings',       -- Account type
-    2000.00,         -- Initial deposit
-    @new_customer_id, -- Output variable for customer ID
-    @new_account_id   -- Output variable for account ID
+    'Jane',          
+    'Johnson',         
+    'Female',         
+    'jane.johnson@example.com', 
+    '456 Oak Street', 
+    '555-9876',     
+    '987-65-4321', 
+    725,            
+    '1990-03-22',   
+    'Checking',     
+    3000.00,        
+    @new_customer_id, 
+    @new_account_id  
 );
 
--- Check results
 SELECT @new_customer_id AS New_Customer_ID, @new_account_id AS New_Account_ID;
 
--- View the backup log
 SELECT * FROM BACKUP_LOGS ORDER BY Timestamp DESC LIMIT 5;
