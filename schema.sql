@@ -1,4 +1,4 @@
--- Active: 1745234709944@@127.0.0.1@3306@mysql
+-- Active: 1745234709944@@127.0.0.1@3306@bank_management_system
 DROP DATABASE IF EXISTS bank_management_system;
 CREATE DATABASE bank_management_system;
 USE bank_management_system;
