@@ -64,7 +64,6 @@ SELECT * FROM CUSTOMER WHERE Credit_Score > 700;
 SELECT Account_ID, Balance, Account_Type FROM ACCOUNT WHERE Customer_ID = 4;
 SELECT * FROM TRANSACTION WHERE Transaction_Type = 'Deposit' AND Amount > 850;
 
--- Filter
 -- Find customers with high credit scores
 SELECT Customer_ID, F_Name, L_Name, Credit_Score 
 FROM CUSTOMER 
