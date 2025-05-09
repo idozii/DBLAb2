@@ -1,4 +1,4 @@
--- Active: 1745234709944@@127.0.0.1@3306@bank_management_system
+-- Active: 1745234709944@@127.0.0.1@3306@mysql
 DROP DATABASE IF EXISTS bank_management_system;
 CREATE DATABASE bank_management_system;
 USE bank_management_system;
@@ -14,7 +14,6 @@ CREATE TABLE CUSTOMER (
     Credit_Score INT,
     DOB DATE
 );
-
 
 CREATE TABLE CUSTOMER_LOGIN (
     Login_ID INT PRIMARY KEY,
@@ -136,3 +135,12 @@ VALUES
     (108, '2022-05-20', 15000.00, 'Premium Savings', 840, 6),
     (109, '2022-05-22', 4200.00, 'Checking', 840, 6),
     (110, '2022-02-28', 1800.00, 'Checking', 670, 7);
+
+INSERT INTO `TRANSACTION` (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID)
+VALUES
+    (1001, 'Monthly savings deposit', 'Deposit', '2023-04-15 09:30:00', 500.00, 105),
+    (1002, 'Grocery shopping', 'Withdrawal', '2023-04-16 14:45:00', 120.50, 106),
+    (1003, 'Salary deposit', 'Deposit', '2023-04-25 08:00:00', 2500.00, 107),
+    (1004, 'Investment transfer', 'Transfer', '2023-04-28 11:15:00', 1000.00, 108),
+    (1005, 'Utility bill payment', 'Withdrawal', '2023-04-30 16:20:00', 85.75, 109),
+    (1006, 'ATM withdrawal', 'Withdrawal', '2023-05-01 13:10:00', 200.00, 110);

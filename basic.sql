@@ -26,26 +26,43 @@ WHERE Account_ID = 111;
 -- Update transaction description
 UPDATE TRANSACTION 
 SET Description = 'Initial deposit - Welcome bonus' 
-WHERE Transaction_ID = 2001;
+WHERE Transaction_ID = 1001;
 
 -- Delete
 -- Delete a transaction
 DELETE FROM TRANSACTION 
-WHERE Transaction_ID = 2001;
+WHERE Transaction_ID = 1001;
 
--- Delete a customer's account
+-- Delete a customer's account-- First delete the transactions associated with account 110
+DELETE FROM TRANSACTION 
+WHERE Account_ID = 110;
+
+-- Then delete the account
 DELETE FROM ACCOUNT 
-WHERE Account_ID = 111;
+WHERE Account_ID = 110;
 
--- Delete a customer (would require deleting related records first due to foreign key constraints)
+-- Delete a customer (handling foreign key constraints properly)
+-- First delete any transactions associated with customer's accounts
+DELETE FROM TRANSACTION 
+WHERE Account_ID IN (SELECT Account_ID FROM ACCOUNT WHERE Customer_ID = 7);
+
+-- Delete any customer login records
+DELETE FROM CUSTOMER_LOGIN
+WHERE Customer_ID = 7;
+
+-- Then delete the customer's accounts
+DELETE FROM ACCOUNT 
+WHERE Customer_ID = 7;
+
+-- Finally delete the customer record
 DELETE FROM CUSTOMER 
-WHERE Customer_ID = 8;
+WHERE Customer_ID = 7;
 
 -- Select
 -- Basic select statements
 SELECT * FROM CUSTOMER WHERE Credit_Score > 700;
-SELECT Account_ID, Balance, Account_Type FROM ACCOUNT WHERE Customer_ID = 8;
-SELECT * FROM TRANSACTION WHERE Transaction_Type = 'Deposit' AND Amount > 1000;
+SELECT Account_ID, Balance, Account_Type FROM ACCOUNT WHERE Customer_ID = 4;
+SELECT * FROM TRANSACTION WHERE Transaction_Type = 'Deposit' AND Amount > 850;
 
 -- Filter
 -- Find customers with high credit scores
@@ -58,7 +75,7 @@ ORDER BY Credit_Score DESC;
 SELECT a.Account_ID, a.Balance, c.F_Name, c.L_Name 
 FROM ACCOUNT a
 JOIN CUSTOMER c ON a.Customer_ID = c.Customer_ID
-WHERE a.Balance < 1000;
+WHERE a.Balance < 5000;
 
 -- Find recent transactions
 SELECT t.Transaction_ID, t.Amount, t.Transaction_Type, t.Transaction_Time, c.F_Name, c.L_Name
