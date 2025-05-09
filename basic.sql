@@ -1,5 +1,7 @@
 -- Active: 1745234709944@@127.0.0.1@3306@bank_management_system
 USE bank_management_system;
+
+--! Add
 -- Adding a new customer
 INSERT INTO CUSTOMER (Customer_ID, F_Name, L_Name, Gender, Email, Address, Phone, SSN, Credit_Score, DOB)
 VALUES (8, 'John', 'Doe', 'Male', 'john.doe@example.com', '123 Main St', '555-1234', '123-45-6789', 750, '1985-06-15');
@@ -12,7 +14,7 @@ VALUES (111, CURRENT_DATE(), 5000.00, 'Savings', 750, 8);
 INSERT INTO TRANSACTION (Transaction_ID, Description, Transaction_Type, Transaction_Time, Amount, Account_ID)
 VALUES (2001, 'Initial deposit', 'Deposit', NOW(), 5000.00, 111);
 
--- Update
+--! Update
 -- Update customer's phone number
 UPDATE CUSTOMER 
 SET Phone = '555-5678' 
@@ -28,7 +30,7 @@ UPDATE TRANSACTION
 SET Description = 'Initial deposit - Welcome bonus' 
 WHERE Transaction_ID = 1001;
 
--- Delete
+--! Delete
 -- Delete a transaction
 DELETE FROM TRANSACTION 
 WHERE Transaction_ID = 1001;
@@ -58,7 +60,7 @@ WHERE Customer_ID = 7;
 DELETE FROM CUSTOMER 
 WHERE Customer_ID = 7;
 
--- Select
+--! Select
 -- Basic select statements
 SELECT * FROM CUSTOMER WHERE Credit_Score > 700;
 SELECT Account_ID, Balance, Account_Type FROM ACCOUNT WHERE Customer_ID = 4;

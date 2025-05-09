@@ -26,7 +26,7 @@ CREATE TABLE CUSTOMER_LOGIN (
 );
 
 CREATE TABLE BACKUP_LOGS (
-    Backup_ID INT PRIMARY KEY,
+    Backup_ID INT AUTO_INCREMENT PRIMARY KEY,
     Timestamp DATETIME,
     Filepath VARCHAR(255),
     Status ENUM('Success', 'Failed')
